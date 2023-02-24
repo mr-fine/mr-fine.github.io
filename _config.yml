@@ -11,6 +11,71 @@ description: Web Developer from Somewhere
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
 avatar: https://raw.githubusercontent.com/barryclark/jekyll-now/master/images/jekyll-logo.png
 
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Encryption and Decryption</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Add event listener for encrypt form submit
+      $("#encrypt-form").submit(function(event) {
+        // Prevent default form submission
+        event.preventDefault();
+
+        // Extract message from form
+        var message = $("#encrypt-message").val();
+
+        // Send AJAX request to server for encryption
+        $.post("/encrypt", { message: message }, function(response) {
+          // Display encrypted message in result div
+          $("#result").text(response);
+        });
+      });
+
+      // Add event listener for decrypt form submit
+      $("#decrypt-form").submit(function(event) {
+        // Prevent default form submission
+        event.preventDefault();
+
+        // Extract ciphertext, public key, and private key from form
+        var ciphertext = $("#decrypt-ciphertext").val();
+        var publicKey = $("#decrypt-public-key").val();
+        var privateKey = $("#decrypt-private-key").val();
+
+        // Send AJAX request to server for decryption
+        $.post("/decrypt", { ciphertext: ciphertext, publicKey: publicKey, privateKey: privateKey }, function(response) {
+          // Display decrypted message in result div
+          $("#result").text(response);
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+  <h1>Encryption and Decryption</h1>
+  <h2>Encrypt Message</h2>
+  <form id="encrypt-form">
+    <label for="encrypt-message">Message:</label>
+    <input type="text" id="encrypt-message" name="encrypt-message"><br><br>
+    <input type="submit" value="Encrypt">
+  </form>
+  <h2>Decrypt Message</h2>
+  <form id="decrypt-form">
+    <label for="decrypt-ciphertext">Ciphertext:</label>
+    <input type="text" id="decrypt-ciphertext" name="decrypt-ciphertext"><br><br>
+    <label for="decrypt-public-key">Public Key:</label>
+    <input type="text" id="decrypt-public-key" name="decrypt-public-key"><br><br>
+    <label for="decrypt-private-key">Private Key:</label>
+    <input type="text" id="decrypt-private-key" name="decrypt-private-key"><br><br>
+    <input type="submit" value="Decrypt">
+  </form>
+  <h2>Result</h2>
+  <div id="result"></div>
+</body>
+</html>
+
+
 #
 # Flags below are optional
 #
